@@ -15,8 +15,7 @@
         }
       }
     ],
-    "@babel/preset-typescript",
-    "@babel/preset-react"
+    "@babel/preset-typescript"
   ],
   "plugins": [
     "@babel/plugin-proposal-optional-chaining",
@@ -25,13 +24,6 @@
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
     "@babel/plugin-transform-async-to-generator",
-    "@babel/plugin-transform-runtime",
-    [
-      "styled-jsx/babel",
-      {
-        "sourceMaps": true,
-        "optimizeForSpeed": true
-      }
-    ]
+    "@babel/plugin-transform-runtime"
   ]
 }
