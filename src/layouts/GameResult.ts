@@ -1,6 +1,7 @@
 import {EGame} from "../enums/Texts";
 import Game from "./Game";
 import {ILeadTimeByGame} from "../interfaces";
+import {CheckedRouteResultHash} from "../helpers";
 
 const doc = document;
 
@@ -9,8 +10,14 @@ const GameResult: any = {
   averageSec: <number> 0,
   start: function(): void {
     this.gameResult = JSON.parse(sessionStorage.getItem('gameResult'));
-    this.averageSec = Math.floor(this.gameResult.map((item: ILeadTimeByGame) => (item.endTime - item.startTime) / 1000)
-      .reduce((cur, prev) => cur + prev) / this.gameResult.length);
+    if(!this.gameResult) {
+      alert('게임 결과가 없습니다.');
+      window.location.href = window.location.href.replace('#result', '#');
+      return;
+    }
+    this.averageSec = this.gameResult ? Math.floor(this.gameResult?.map((item: ILeadTimeByGame) => (item.endTime - item.startTime) / 1000)
+      .reduce((cur, prev) => cur + prev) / this.gameResult.length) : 0;
+
     if(this.isStart) {
       this.proxy['isStart'] = false;
     }

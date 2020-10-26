@@ -54,7 +54,7 @@ module.exports = (env) => {
     return {
         devtool: 'source-map',
         entry: {
-            kakaopay_homework: './src/kakaopay-homework/index.tsx'
+            kakaopay_homework: './src/index.tsx'
         } ,
         devServer: {
             hot: true,

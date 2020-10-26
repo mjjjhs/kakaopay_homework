@@ -17,13 +17,12 @@
     "preserveConstEnums": true,
     "paths": {
       "*": [
-        "src/**/*"
+        "src/*"
       ]
     },
     "declaration": true,
     "typeRoots": [
-      "node_modules/@types",
-      "src/@types"
+      "node_modules/@types"
     ],
     "skipLibCheck": true,
     "strict": false,
@@ -37,7 +36,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "src/**/*"
+    "src/*"
   ],
   "exclude": [
     "node_modules",
