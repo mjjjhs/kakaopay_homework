@@ -12,7 +12,14 @@ const CheckedRouteHash = (hashStr: string): boolean => {
   return window.location.hash.replace('#', '') === hashStr;
 };
 const goRoute = (hashStr: string): void => {
-  window.location.href = `${window.location.origin}/#${hashStr}`;
+  const loc = window.location;
+  const urlHash = loc.hash;
+  const url = loc.href;
+  if(urlHash.includes('#start')) {
+    loc.href = url.replace('#start', `#${hashStr}`);
+  } else if(urlHash.includes('#') || !urlHash) {
+    loc.href = url.replace('#', `#${hashStr}`);
+  }
 };
 const getScoped = (): any => {
   let scoped;
