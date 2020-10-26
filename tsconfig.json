@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES5",
+    "lib": [
+      "ES2015",
+      "ES2017",
+      "DOM",
+      "ESNext"
+    ],
+    "removeComments": true,
+    "allowJs": true,
+    "baseUrl": "./src",
+    "preserveConstEnums": true,
+    "paths": {
+      "*": [
+        "src/**/*"
+      ]
+    },
+    "declaration": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ],
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

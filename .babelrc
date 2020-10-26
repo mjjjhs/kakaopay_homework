@@ -1,0 +1,37 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "chrome": "55",
+          "ie": "11"
+        },
+        "debug": true,
+        "useBuiltIns": "entry",
+        "corejs": {
+          "version": 3,
+          "proposals": true
+        }
+      }
+    ],
+    "@babel/preset-typescript",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "@babel/plugin-proposal-private-methods",
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread",
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-transform-runtime",
+    [
+      "styled-jsx/babel",
+      {
+        "sourceMaps": true,
+        "optimizeForSpeed": true
+      }
+    ]
+  ]
+}
