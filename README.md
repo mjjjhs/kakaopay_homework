@@ -7,7 +7,7 @@
 ### build
 * webpack으로 public 폴더에 번들링 (production mode)
 
-#과제 해결 전략
+# 과제 해결 전략
 ## 1. 설정
 * ### webpack
     - entry
