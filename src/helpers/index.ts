@@ -7,6 +7,7 @@ import {
   goRoute,
   getScoped
 } from "./Route";
+import Util from "./Util";
 
 export {
   Fetch,
@@ -15,5 +16,6 @@ export {
   CheckedOtherThanRouteHash,
   CheckedRouteHash,
   goRoute,
-  getScoped
+  getScoped,
+  Util
 }

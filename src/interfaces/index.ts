@@ -17,3 +17,8 @@ export interface ILeadTimeByGame {
   startTime?: number;
   endTime?: number;
 }
+export interface IHeaderList {
+  title: string;
+  id: string;
+  text: string;
+}

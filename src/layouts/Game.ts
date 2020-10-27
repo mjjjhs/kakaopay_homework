@@ -5,7 +5,7 @@ import {
   CheckedRouteResultHash,
   Fetch,
   goRoute,
-  HandleError
+  HandleError, Util
 } from "../helpers";
 import {IGame, IGameProxyTarget, ILeadTimeByGame} from "../interfaces";
 import {ERoute} from "../enums/Config";
@@ -72,7 +72,7 @@ const Game: any = {
   score:<number> 0,
   leadTimeByGame: new Map<string, ILeadTimeByGame>([]),
   isStart:<boolean> false,
-  start:<() => void> async function(): Promise<void> {
+  start: async function(): Promise<void> {
     if(!this.gameList?.length) {
       this.gameList = await Fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words');
       this.score = this.gameList?.length || 0;
@@ -89,14 +89,13 @@ const Game: any = {
     this.setEvent();
   },
   triggerAnchor: (anchorNode: HTMLAnchorElement, value: boolean): void => {
-    const anchorNodeeClassList = anchorNode.classList;
     if(!value) {
       anchorNode.textContent = EGame.START;
-      anchorNodeeClassList.replace('btn_init', 'btn_start');
+      Util.replaceClass(anchorNode, 'btn_init', 'btn_start');
       anchorNode.setAttribute('href', '#start');
     } else {
       anchorNode.textContent = EGame.INIT;
-      anchorNodeeClassList.replace('btn_start', 'btn_init');
+      Util.replaceClass(anchorNode, 'btn_start', 'btn_init');
       anchorNode.setAttribute('href', '#');
     }
   },
@@ -167,27 +166,41 @@ const Game: any = {
     }
   },
   render: function(): void {
-    const template = `
-      <header id="header" class="header"></header>
-      <section class="section_start">
-        <input 
-          type="text" 
-          id="word_input" 
-          class="inp_txt" 
-          placeholder="${EGame.INPUT}" 
-          disabled
-        />
-        <a 
-          id="game_btn" 
-          class="btn_comm btn_start" 
-          href="#start"
-        >
-          ${EGame.START}
-        </a>
-      </section>
-    `;
+    const fragment = new DocumentFragment();
+    const contentEl = doc.createElement('div');
+    contentEl.setAttribute('id', 'game_content');
+
+    const headerEl = doc.createElement('header');
+    headerEl.setAttribute('id', 'header');
+    Util.addClass(headerEl, 'header');
+
+    const sectionEl = doc.createElement('section');
+    Util.addClass(sectionEl, 'section_start');
+
+    const inputEl = doc.createElement('input');
+    inputEl.setAttribute('type', 'text');
+    inputEl.setAttribute('id', 'word_input');
+    inputEl.setAttribute('placeholder', EGame.INPUT);
+    Util.addClass(inputEl, 'inp_txt');
+    inputEl.disabled = true;
+
+    const anchorEl = doc.createElement('a');
+    anchorEl.setAttribute('id', 'game_btn');
+    anchorEl.setAttribute('href', '#start');
+    Util.addClass(anchorEl, 'btn_comm btn_start');
+    const textNode = doc.createTextNode(EGame.START);
+    anchorEl.appendChild(textNode);
+
+    sectionEl.appendChild(inputEl);
+    sectionEl.appendChild(anchorEl);
+
+    contentEl.appendChild(headerEl);
+    contentEl.appendChild(sectionEl);
+
+    fragment.appendChild(contentEl);
+
     const target = doc.getElementById('container');
-    target.innerHTML = template;
+    target.innerHTML = fragment.getElementById('game_content').innerHTML;
   }
 };
 

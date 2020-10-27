@@ -1,7 +1,8 @@
 import {EGame} from "../enums/Texts";
 import {EConfig, ERoute} from "../enums/Config";
 import Game from "../layouts/Game";
-import {CheckedRouteHash, goRoute} from "../helpers";
+import {CheckedRouteHash, goRoute, Util} from "../helpers";
+import {IHeaderList} from "../interfaces";
 
 const doc = document;
 const proxyTarget = {};
@@ -20,9 +21,8 @@ const proxyHandler: ProxyHandler<any> = {
         if(value < 0) {
           clearInterval(Header.interval);
           --Game.score;
-          proxy['score'] = Game.score;
+          Header.proxy['score'] = Game.score;
           Game.leadTimeByGame.delete(Game.gameIdx.toString());
-          // if(Game.gameIdx < 3) {
           if(Game.gameIdx < Game.gameList.length - 1) { //주석제거
             Game.setGame(Game.gameIdx + 1);
           } else {
@@ -41,9 +41,9 @@ const proxyHandler: ProxyHandler<any> = {
         break;
       case 'props':
         Header.second = value.curGame.second;
-        proxy['second'] = Header.second;
-        proxy['score'] = value.score;
-        proxy['word'] = value.curGame.text;
+        Header.proxy['second'] = Header.second;
+        Header.proxy['score'] = value.score;
+        Header.proxy['word'] = value.curGame.text;
         break;
       default:
     }
@@ -52,10 +52,11 @@ const proxyHandler: ProxyHandler<any> = {
   }
 };
 
-const proxy: ProxyConstructor = new Proxy(proxyTarget, proxyHandler);
+
 
 const Header: any = {
-  interval:<ReturnType<typeof setInterval>> null,
+  proxy: <ProxyConstructor> new Proxy(proxyTarget, proxyHandler),
+  interval: <ReturnType<typeof setInterval>> null,
   second:<number> 0,
   setInterval: function(): void {
     if(this.interval) {
@@ -63,7 +64,7 @@ const Header: any = {
     }
     this.interval = setInterval(() => {
       --this.second;
-      proxy['second'] = this.second;
+      this.proxy['second'] = this.second;
     }, EConfig.REMAIN_SEC_INTERVAL_TIME);
   },
   start: function(props): void {
@@ -71,7 +72,7 @@ const Header: any = {
     this.setGame(props);
   },
   setGame: function(props) {
-    proxy['props'] = props;
+    this.proxy['props'] = props;
     if(CheckedRouteHash(ERoute.START)) {
       Game.leadTimeByGame.set(Game.gameIdx.toString(), {startTime: new Date().getTime()});
       this.setInterval();
@@ -80,23 +81,54 @@ const Header: any = {
     }
   },
   render: function(): void {
-    const template = `
-      <h1 class="screen_out">${EGame.TYPING_GAME}</h1>
-      <ul class="list_info">
-        <li>
-          ${EGame.REMAIN_TIME} : 
-          <span id="remain_second"></span>
-          ${EGame.SECOND}
-        </li>
-        <li>${EGame.SCORE} : 
-          <span id="score"></span>
-          ${EGame.POINT}
-        </li>
-      </ul>
-      <h2 id="word" class="tit_question"></h2>
-    `;
+    const fragment = new DocumentFragment();
+    const contentEl = doc.createElement('div');
+    contentEl.setAttribute('id', 'header_content');
+
+    const h1El = doc.createElement('h1');
+    Util.addClass(h1El, 'screen_out');
+    let textNode = doc.createTextNode(EGame.TYPING_GAME);
+    h1El.appendChild(textNode);
+
+    const ulEl = doc.createElement('ul');
+    Util.addClass(ulEl, 'list_info');
+
+    const liArr: IHeaderList[] = [
+      {
+        title: `${EGame.REMAIN_TIME} : `,
+        id: 'remain_second',
+        text: EGame.SECOND
+      },
+      {
+        title: `${EGame.SCORE} : `,
+        id: 'score',
+        text: EGame.POINT
+      }
+    ];
+    liArr.map(li => {
+      const liEl = doc.createElement('li');
+      textNode = doc.createTextNode(li.title);
+      liEl.appendChild(textNode);
+      const spanEl = doc.createElement('span');
+      spanEl.setAttribute('id', li.id);
+      liEl.appendChild(spanEl);
+      textNode = doc.createTextNode(li.text);
+      liEl.appendChild(textNode);
+      ulEl.appendChild(liEl);
+    });
+
+    const h2El = doc.createElement('h2');
+    h2El.setAttribute('id', 'word');
+    Util.addClass(h2El, 'tit_question');
+
+    contentEl.appendChild(h1El);
+    contentEl.appendChild(ulEl);
+    contentEl.appendChild(h2El);
+
+    fragment.appendChild(contentEl);
+
     const target = doc.getElementById('header');
-    target.innerHTML = template;
+    target.innerHTML = fragment.getElementById('header_content').innerHTML;
   }
 };
 
