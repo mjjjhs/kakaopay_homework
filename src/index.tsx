@@ -9,7 +9,7 @@ const App: any = {
     this.render();
   },
   render: function(): void {
-    const template = '<div id="container"></div>';
+    const template = '<main id="container"></main>';
 
     const rootNode = doc.getElementById('root');
     rootNode.innerHTML = template;

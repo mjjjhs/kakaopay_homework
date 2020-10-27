@@ -16,20 +16,13 @@ module.exports = (env) => {
                     name: 'vendors',
                     chunks: 'all'
                 }
-            }
+            },
+            chunks: 'all'
         }
     };
     if( isDevelopment !== 'development') {
         optimization = {
-            splitChunks: {
-                cacheGroups: {
-                    commons: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: 'vendors',
-                        chunks: 'all'
-                    }
-                }
-            },
+            ...optimization,
             minimize: true,
             minimizer: [
                 new TerserPlugin({
@@ -66,7 +59,7 @@ module.exports = (env) => {
             }
         },
         resolve: {
-            extensions: ['.ts', '.tsx', '.js'],
+            extensions: ['.ts', '.js'],
             modules: ['node_modules'],
             plugins: [
                 // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -125,18 +118,6 @@ module.exports = (env) => {
                     test: /\.js$/,
                     use: ["source-map-loader"],
                     enforce: "pre"
-                },
-                {
-                    test: /\.(png|svg|jpg|gif)$/,
-                    use: [
-                        'file-loader',
-                    ],
-                },
-                {
-                    test: /\.(woff|woff2|eot|ttf|otf)$/,
-                    use: [
-                        'file-loader',
-                    ],
                 },
                 {
                     test: /\.css$/,

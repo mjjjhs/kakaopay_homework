@@ -167,15 +167,15 @@ const Game: any = {
   },
   render: function(): void {
     const fragment = new DocumentFragment();
-    const contentEl = doc.createElement('div');
+    let contentEl = doc.createElement('div');
     contentEl.setAttribute('id', 'game_content');
 
-    const headerEl = doc.createElement('header');
+    const headerEl = doc.createElement('div');
     headerEl.setAttribute('id', 'header');
     Util.addClass(headerEl, 'header');
 
     const sectionEl = doc.createElement('section');
-    Util.addClass(sectionEl, 'section_start');
+    Util.addClass(sectionEl, 'section_game');
 
     const inputEl = doc.createElement('input');
     inputEl.setAttribute('type', 'text');

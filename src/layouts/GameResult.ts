@@ -15,8 +15,11 @@ const GameResult: any = {
       window.location.href = window.location.href.replace('#result', '#');
       return;
     }
-    this.averageSec = this.gameResult ? Math.floor(this.gameResult?.map((item: ILeadTimeByGame) => (item.endTime - item.startTime) / 1000)
-      .reduce((cur, prev) => cur + prev) / this.gameResult.length) : 0;
+    this.averageSec = this.gameResult && this.gameResult.length
+      ?
+      Math.floor(this.gameResult.map((item: ILeadTimeByGame) => (item.endTime - item.startTime) / 1000)
+        .reduce((cur, prev) => cur + prev, 0) / this.gameResult.length)
+        : 0;
 
     if(this.isStart) {
       this.proxy['isStart'] = false;

@@ -1,7 +1,7 @@
 import Game from "../layouts/Game";
 import GameResult from "../layouts/GameResult";
 import {IRoute} from "../interfaces";
-import {CheckedRouteResultHash, getScoped} from "../helpers";
+import {getScoped} from "../helpers";
 
 const routes: IRoute = {
   '/': Game.start,
