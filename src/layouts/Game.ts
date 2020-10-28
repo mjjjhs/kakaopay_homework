@@ -45,16 +45,23 @@ const proxyHandler:ProxyHandler<any> = {
         if(Game.isStart === value) {
           return true;
         }
+
         Game.isStart = value;
+
         if(!CheckedRouteResultHash()) {
           return true;
         }
+
         const wordInputNode = doc.getElementById('word_input') as HTMLInputElement;
-        wordInputNode.disabled = !value;
-        value && wordInputNode.focus();
+        if(wordInputNode) {
+          wordInputNode.disabled = !value;
+          value && wordInputNode.focus();
+        }
 
         const anchorNode = doc.getElementById('game_btn') as HTMLAnchorElement;
-        Game.triggerAnchor(anchorNode, value);
+        if(anchorNode) {
+          Game.triggerAnchor(anchorNode, value);
+        }
         break;
       }
       default:
@@ -73,20 +80,24 @@ const Game: any = {
   leadTimeByGame: new Map<string, ILeadTimeByGame>([]),
   isStart:<boolean> false,
   start: async function(): Promise<void> {
-    if(!this.gameList?.length) {
-      this.gameList = await Fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words');
-      this.score = this.gameList?.length || 0;
+    try{
+      if(!this.gameList?.length) {
+        this.gameList = await Fetch('https://my-json-server.typicode.com/kakaopay-fe/resources/words');
+        this.score = this.gameList?.length || 0;
+      }
+      if(this.leadTimeByGame.size) {
+        this.leadTimeByGame.clear();
+      }
+      this.render();
+      this.initScore();
+      this.initGame();
+      if(!CheckedOtherThanRouteHash(ERoute.START)){
+        this.setGame(this.gameIdx);
+      }
+      this.setEvent();
+    } catch(e) {
+      HandleError(e);
     }
-    if(this.leadTimeByGame.size) {
-      this.leadTimeByGame.clear();
-    }
-    this.render();
-    this.initScore();
-    this.initGame();
-    if(!CheckedOtherThanRouteHash(ERoute.START)){
-      this.setGame(this.gameIdx);
-    }
-    this.setEvent();
   },
   triggerAnchor: (anchorNode: HTMLAnchorElement, value: boolean): void => {
     if(!value) {
@@ -200,7 +211,9 @@ const Game: any = {
     fragment.appendChild(contentEl);
 
     const target = doc.getElementById('container');
-    target.innerHTML = fragment.getElementById('game_content').innerHTML;
+    if(target) {
+      target.innerHTML = fragment.getElementById('game_content').innerHTML;
+    }
   }
 };
 

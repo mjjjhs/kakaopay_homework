@@ -12,6 +12,9 @@ const CheckedRouteHash = (hashStr: string): boolean => {
   return window.location.hash.replace('#', '') === hashStr;
 };
 const goRoute = (hashStr: string): void => {
+  if(!hashStr) {
+    throw new Error('wrong param hashStr');
+  }
   const loc = window.location;
   const urlHash = loc.hash;
   const url = loc.href;

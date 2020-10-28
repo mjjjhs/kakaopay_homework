@@ -9,8 +9,8 @@ const GameResult: any = {
   gameResult: <ILeadTimeByGame[]> [],
   averageSec: <number> 0,
   start: function(): void {
-    this.gameResult = JSON.parse(sessionStorage.getItem('gameResult'));
-    if(!this.gameResult) {
+    this.gameResult = JSON.parse(sessionStorage.getItem('gameResult')) || [];
+    if(!this.gameResult.length) {
       alert('게임 결과가 없습니다.');
       window.location.href = window.location.href.replace('#result', '#');
       return;
@@ -20,9 +20,8 @@ const GameResult: any = {
       Math.floor(this.gameResult.map((item: ILeadTimeByGame) => (item.endTime - item.startTime) / 1000)
         .reduce((cur, prev) => cur + prev, 0) / this.gameResult.length)
         : 0;
-
-    if(this.isStart) {
-      this.proxy['isStart'] = false;
+    if(Game.isStart) {
+      Game.proxy['isStart'] = false;
     }
     this.render();
     this.setEvent();
@@ -76,7 +75,9 @@ const GameResult: any = {
     fragment.appendChild(contentEl);
 
     const target = doc.getElementById('container');
-    target.innerHTML = fragment.getElementById('game_result_content').innerHTML;
+    if(target) {
+      target.innerHTML = fragment.getElementById('game_result_content').innerHTML;
+    }
   }
 };
 

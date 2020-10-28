@@ -1,7 +1,7 @@
 import {EGame} from "../enums/Texts";
 import {EConfig, ERoute} from "../enums/Config";
 import Game from "../layouts/Game";
-import {CheckedRouteHash, goRoute, Util} from "../helpers";
+import {CheckedRouteHash, goRoute, HandleError, Util} from "../helpers";
 import {IHeaderList} from "../interfaces";
 
 const doc = document;
@@ -12,10 +12,16 @@ const proxyHandler: ProxyHandler<any> = {
   set: (obj, prop, value): boolean => {
     switch(prop) {
       case 'word':
-        doc.getElementById('word').textContent = value;
+        const wordEl = doc.getElementById('word');
+        if(wordEl) {
+          wordEl.textContent = value;
+        }
         break;
       case 'score':
-        doc.getElementById('score').textContent = value;
+        const scoreEl = doc.getElementById('score');
+        if(scoreEl) {
+          scoreEl.textContent = value;
+        }
         break;
       case 'second':
         if(value < 0) {
@@ -128,7 +134,9 @@ const Header: any = {
     fragment.appendChild(contentEl);
 
     const target = doc.getElementById('header');
-    target.innerHTML = fragment.getElementById('header_content').innerHTML;
+    if(target) {
+      target.innerHTML = fragment.getElementById('header_content').innerHTML;
+    }
   }
 };
 

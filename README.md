@@ -117,6 +117,17 @@
     - 문제 푼 정보로 점수를 노출
     - 다시 시작 버튼 클릭시 '/#start'로 hash 변경되고 게임을 다시 진행
 ## 4. 단위 테스트
+* ### 테스트 도구
+    - jest (ts-jest) 사용
+        + tests 디렉토리에 *.spec.ts 파일로 정의
+        + package.json에 설정 추가
+        + Route.spec.ts --> hash를 체크하는 함수의 테스트
+        + Game.spec.ts 
+            + 문제 List를 가져오는 비동기 함수 테스트
+            + 문제를 set 하는 테스트
+        + GameResult.spec.ts --> game end 후 초기화 테스트
+        + test시 coverage 체크하여 coverage 디렉토리에 output
+        
 
 
 

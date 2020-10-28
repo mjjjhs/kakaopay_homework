@@ -6,4 +6,5 @@ dist/
 public/
 .env
 .env.*
+coverage
 
